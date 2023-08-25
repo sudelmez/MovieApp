@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import { Formik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
@@ -8,18 +8,28 @@ import CustomField from '../../component/field/custom_field';
 import ButtonCustom from '../../component/button/custom_button';
 import TextButton from '../../component/text_button/text_button';
 import { LoginSchema } from '../../service/Yup';
+import { useDispatch } from 'react-redux';
 
 const AuthView = () => {
     const navigation = useNavigation();
+    const [mail, setMail] = useState('');
+    const [name, setName] = useState('');
+    const dispatch = useDispatch();
 
     const initialValues = {
         email: '',
         password: '',
+        name:'',
     };
 
     const handleOnSubmit = (values) => {
         console.log(values);
         navigation.navigate('homeTabs', { screen: 'Home' });
+    };
+
+    const handleAdd = () => {
+        console.log(mail);
+        dispatch({ type: 'Add_User', payload: { email: mail,name:name } });
     };
 
     return (
@@ -33,10 +43,19 @@ const AuthView = () => {
                     <Text style={styles.text}>Welcome!</Text>
 
                     <CustomField
+                        hint="Name"
+                        field={formikProps.getFieldProps('name')}
+                        form={formikProps}
+                        title="Name"
+                        setFieldValue={setName}
+                        fieldValue={mail}
+                    /><CustomField
                         hint="Mail"
                         field={formikProps.getFieldProps('email')}
                         form={formikProps}
                         title="Mail"
+                        setFieldValue={setMail}
+                        fieldValue={mail}
                     />
 
                     <CustomField
@@ -48,7 +67,10 @@ const AuthView = () => {
 
                     <ButtonCustom
                         title="Log In"
-                        onPress={formikProps.handleSubmit}
+                        onPress={() => {
+                            formikProps.handleSubmit();
+                            handleAdd();
+                        }}
                     />
 
                     <TextButton

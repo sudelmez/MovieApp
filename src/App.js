@@ -12,7 +12,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import homeIcon from './res/images/home.png';
 import profileIcon from './res/images/profile.png';
 import colors from './constants/Colors.ts';
-
+import UserProvider from './context/Provider';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,16 +44,18 @@ const HomeTabs = () => {
 
 const App = () => {
   return (
-    <>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="auth" component={AuthView} />
-          <Stack.Screen name="register" component={RegisterView} />
-          <Stack.Screen name="homeTabs" component={HomeTabs} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+    <UserProvider>
+      <>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="auth" component={AuthView} />
+            <Stack.Screen name="register" component={RegisterView} />
+            <Stack.Screen name="homeTabs" component={HomeTabs} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </>
+    </UserProvider>
   );
 };
 
