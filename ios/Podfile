@@ -24,7 +24,7 @@ if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! :linkage => linkage.to_sym
 end
-
+use_frameworks! :linkage => :static
 target 'MovieApp' do
   config = use_native_modules!
 
@@ -44,8 +44,10 @@ target 'MovieApp' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
+  use_modular_headers!
   target 'MovieAppTests' do
+    pod 'FirebaseCoreInternal', :modular_headers => true
+    pod 'GoogleUtilities', :modular_headers => true
     inherit! :complete
     # Pods for testing
   end

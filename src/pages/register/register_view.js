@@ -8,7 +8,7 @@ import ButtonCustom from '../../component/button/custom_button';
 import { Formik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
 import { SignupSchema } from '../../service/Yup';
-
+import { doCreateUser } from '../../service/auth_service/register.js';
 
 function RegisterView() {
     const navigation = useNavigation();
@@ -40,9 +40,14 @@ function RegisterView() {
         <Formik
             initialValues={{ email: '', password: '', name: '', lastname: '' }}
             validationSchema={SignupSchema}
-            onSubmit={values => {
-                console.log(values);
-                navigation.navigate('auth');
+            onSubmit={async values => {
+                try {
+                    await doCreateUser(values.email, values.password, values.name);
+                    console.log('User created successfully:', values);
+                    navigation.navigate('auth');
+                } catch (error) {
+                    console.error('User creation error:', error);
+                }
             }}
         >
             {formikProps => <FormContent formikProps={formikProps} />}

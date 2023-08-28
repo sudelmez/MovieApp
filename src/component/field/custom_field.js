@@ -3,7 +3,7 @@ import React from 'react';
 import { TextInput, View, Text } from 'react-native';
 import styles from './custom_field.style';
 
-const CustomField = ({ field = {}, hint, form, setFieldValue, fieldValue, ...props }) => {
+const CustomField = ({ field = {}, hint, form, ...props }) => {
     const { name } = field;
     const { touched, errors } = form;
 
@@ -13,12 +13,7 @@ const CustomField = ({ field = {}, hint, form, setFieldValue, fieldValue, ...pro
                 {...props}
                 {...field}
                 placeholder={hint}
-                onChangeText={(text) => {
-                    form.handleChange(name)(text);
-                    if (name === 'email' || name === 'name') {
-                        setFieldValue(text);
-                    }
-                }}
+                onChangeText={form.handleChange(name)}
                 onBlur={form.handleBlur(name)}
             />
             {touched[name] && errors[name] && <Text style={styles.errorText}>{errors[name]}</Text>}
@@ -26,5 +21,5 @@ const CustomField = ({ field = {}, hint, form, setFieldValue, fieldValue, ...pro
     );
 };
 
-
 export default CustomField;
+
