@@ -8,16 +8,16 @@ import ButtonCustom from '../../component/button/custom_button';
 import { Formik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
 import { SignupSchema } from '../../service/Yup';
-
+import { doCreateUser } from '../../service/firebase/register';
 
 function RegisterView() {
     const navigation = useNavigation();
 
     const fields = [
-        { name: 'name', title: 'Name', hint: 'Name' },
-        { name: 'lastname', title: 'Lastname', hint: 'Lastname' },
-        { name: 'email', title: 'Mail', hint: 'Mail' },
-        { name: 'password', title: 'Password', hint: 'Password' },
+        { name: 'name', title: 'Name', hint: 'Name', key: 'a' },
+        { name: 'lastname', title: 'Lastname', hint: 'Lastname', key: 'b' },
+        { name: 'email', title: 'Mail', hint: 'Mail', key: 'c' },
+        { name: 'password', title: 'Password', hint: 'Password', key: 'd' },
     ];
 
     const FormContent = ({ formikProps }) => (
@@ -25,7 +25,7 @@ function RegisterView() {
             <Text style={styles.text}>Welcome Again!</Text>
             {fields.map(field => (
                 <CustomField
-                    key={field.name}
+                    key={field.key}
                     hint={field.hint}
                     field={formikProps.getFieldProps(field.name)}
                     form={formikProps}
@@ -40,8 +40,9 @@ function RegisterView() {
         <Formik
             initialValues={{ email: '', password: '', name: '', lastname: '' }}
             validationSchema={SignupSchema}
-            onSubmit={values => {
+            onSubmit={async values => {
                 console.log(values);
+                await doCreateUser(values.email, values.password, values.name);
                 navigation.navigate('auth');
             }}
         >

@@ -6,17 +6,18 @@ import styles from './custom_field.style';
 const CustomField = ({ field = {}, hint, form, setFieldValue, fieldValue, ...props }) => {
     const { name } = field;
     const { touched, errors } = form;
-
     return (
         <View style={styles.container}>
             <TextInput
                 {...props}
-                {...field}
+                name={name}
+                value={field.value}
                 placeholder={hint}
                 onChangeText={(text) => {
                     form.handleChange(name)(text);
                     if (name === 'email' || name === 'name') {
-                        setFieldValue(text);
+                        form.setFieldValue(name, text);
+
                     }
                 }}
                 onBlur={form.handleBlur(name)}

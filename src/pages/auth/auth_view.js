@@ -49,6 +49,7 @@ const AuthView = () => {
                         title="Name"
                         setFieldValue={setName}
                         fieldValue={mail}
+                        key={'e'}
                     /><CustomField
                         hint="Mail"
                         field={formikProps.getFieldProps('email')}
@@ -56,6 +57,7 @@ const AuthView = () => {
                         title="Mail"
                         setFieldValue={setMail}
                         fieldValue={mail}
+                        key={'f'}
                     />
 
                     <CustomField
@@ -63,6 +65,7 @@ const AuthView = () => {
                         field={formikProps.getFieldProps('password')}
                         form={formikProps}
                         title="Password"
+                        key={'g'}
                     />
 
                     <ButtonCustom
